@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import router from "./app/routes";
-// import globalErrorHandler from "./app/middleware/globalErrorHandler";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 
 const app: Application = express();
@@ -17,7 +17,7 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Welcome to Sporting Goods");
 });
 
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 app.use(notFound);
 
 export default app;
