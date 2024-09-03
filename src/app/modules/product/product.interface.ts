@@ -16,6 +16,7 @@ export type TProduct = {
     brand: string;
     category: string;
     rating: number;
+    tag: string;
     variants: TVariant[];
     inventory: TInventory;
 };

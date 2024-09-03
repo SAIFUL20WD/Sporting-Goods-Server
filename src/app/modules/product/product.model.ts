@@ -20,6 +20,7 @@ const productSchema = new Schema<TProduct>(
         brand: { type: String, required: true },
         category: { type: String, required: true },
         rating: { type: Number, required: true },
+        tag: { type: String, default: "New" },
         variants: { type: [variantSchema], required: true },
         inventory: { type: inventorySchema, required: true },
     },

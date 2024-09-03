@@ -79,10 +79,33 @@ const deleteProductById = catchAsync(async (req, res) => {
     });
 });
 
+const getAllCategories = catchAsync(async (req, res) => {
+    const result = await ProductServices.getAllCategoriesFromDB();
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Categories fetched successfully!",
+        data: result,
+    });
+});
+
+const getProductsByCategory = catchAsync(async (req, res) => {
+    const category = req.params.category;
+    const result = await ProductServices.getProductsByCategoryFromDB(category);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Products by category fetched successfully!",
+        data: result,
+    });
+});
+
 export const ProductControllers = {
     createProduct,
     getAllProducts,
     getProductById,
     updateProductById,
     deleteProductById,
+    getAllCategories,
+    getProductsByCategory,
 };

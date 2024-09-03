@@ -42,6 +42,16 @@ const updateProductInventoryToDB = async (id: string, updatedInventoryData: obje
     return result;
 };
 
+const getAllCategoriesFromDB = async () => {
+    const result = await ProductModel.distinct("category");
+    return result;
+};
+
+const getProductsByCategoryFromDB = async (category: string) => {
+    const result = await ProductModel.find({ category });
+    return result;
+};
+
 export const ProductServices = {
     createProductToDB,
     getAllProductsFromDB,
@@ -51,4 +61,6 @@ export const ProductServices = {
     getProductsByQueryFromDB,
     getProductQuantityFromDB,
     updateProductInventoryToDB,
+    getAllCategoriesFromDB,
+    getProductsByCategoryFromDB,
 };

@@ -9,6 +9,10 @@ router.post("/create-product", auth(), validateRequest(productValidationSchema),
 
 router.get("/get-products", ProductControllers.getAllProducts);
 
+router.get("/get-categories", ProductControllers.getAllCategories);
+
+router.get("/getProductsByCategory/:category", ProductControllers.getProductsByCategory);
+
 router.get("/:productId", ProductControllers.getProductById);
 
 router.put("/:productId", auth(), validateRequest(productUpdateValidationSchema), ProductControllers.updateProductById);

@@ -40,6 +40,7 @@ const productValidationSchema = z.object({
         .min(3, { message: "Category must be more than 3 character" })
         .max(30, { message: "Category must be less than 30 character" }),
     rating: z.number().max(5),
+    tag: z.string().optional(),
     variants: variantValidationSchema.optional(),
     inventory: inventoryValidationSchema,
 });
@@ -72,6 +73,7 @@ export const productUpdateValidationSchema = z.object({
         .max(30, { message: "Category must be less than 30 character" })
         .optional(),
     rating: z.number().max(5).optional(),
+    tag: z.string().optional(),
     variants: z
         .array(
             z
