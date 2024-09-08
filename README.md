@@ -83,7 +83,7 @@ Instructions on how to install, configure, and get the project running locally.
 
 Instructions or examples for using the project. Include screenshots or code snippets if applicable.
 
-### Project Live Link: [Vercel](Link)
+### Project Live Link: [Vercel](https://sporting-goods-server-nine.vercel.app/)
 
 ## Contributing
 
