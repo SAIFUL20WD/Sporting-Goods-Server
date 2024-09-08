@@ -26,10 +26,37 @@ const deleteProductByIdFromDB = async (id: string) => {
     return result;
 };
 
-const getProductsByQueryFromDB = async (searchTerm: string) => {
-    // const result = await ProductModel.find({ $text: { $search: searchTerm } });
-    const result = await ProductModel.find({ name: new RegExp(searchTerm, "i") });
-    return result;
+const getProductsByQueryFromDB = async (
+    name: string,
+    categories: string,
+    brands: string,
+    ratings: string,
+    sort: string,
+) => {
+    const categoryList = categories.split(",");
+    const brandList = brands.split(",");
+    const ratingList = ratings.split(",");
+
+    let sortOption = {};
+    if (sort === "price-asc") {
+        sortOption = { price: 1 };
+    } else if (sort === "price-desc") {
+        sortOption = { price: -1 };
+    }
+
+    if (name) {
+        const result = await ProductModel.find({ name: new RegExp(name, "i") });
+        return result;
+    } else if (categoryList.length > 0 || brandList.length > 0 || (ratingList.length > 0 && sort !== "")) {
+        const result = await ProductModel.find({
+            $or: [{ category: { $in: categoryList } }, { brand: { $in: brandList } }, { rating: { $in: ratingList } }],
+        }).sort(sortOption);
+
+        return result;
+    } else {
+        const result = await ProductModel.find({}).sort(sortOption);
+        return result;
+    }
 };
 
 const getProductQuantityFromDB = async (id: string) => {
@@ -47,8 +74,18 @@ const getAllCategoriesFromDB = async () => {
     return result;
 };
 
+const getAllBrandsFromDB = async () => {
+    const result = await ProductModel.distinct("brand");
+    return result;
+};
+
 const getProductsByCategoryFromDB = async (category: string) => {
     const result = await ProductModel.find({ category });
+    return result;
+};
+
+const getProductsByTagFromDB = async (tag: string) => {
+    const result = await ProductModel.find({ tag });
     return result;
 };
 
@@ -62,5 +99,7 @@ export const ProductServices = {
     getProductQuantityFromDB,
     updateProductInventoryToDB,
     getAllCategoriesFromDB,
+    getAllBrandsFromDB,
     getProductsByCategoryFromDB,
+    getProductsByTagFromDB,
 };

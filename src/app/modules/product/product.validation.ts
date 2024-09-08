@@ -2,12 +2,8 @@ import { z } from "zod";
 
 const variantValidationSchema = z.array(
     z.object({
-        type: z.string().trim().min(3, { message: "type must be more than 3 character" }).max(50, {
-            message: "type must be less than 50 character",
-        }),
-        value: z.string().trim().min(3, { message: "value must be more than 3 character" }).max(50, {
-            message: "value must be less than 50 character",
-        }),
+        type: z.string().trim(),
+        value: z.string().trim(),
     }),
 );
 
@@ -17,28 +13,14 @@ const inventoryValidationSchema = z.object({
 });
 
 const productValidationSchema = z.object({
-    name: z
-        .string()
-        .trim()
-        .min(5, { message: "Product name must be more than 5 character" })
-        .max(50, { message: "Product name must be less than 50 character" }),
-    description: z
-        .string()
-        .trim()
-        .min(5, { message: "Description must be more than 5 character" })
-        .max(200, { message: "Description must be less than 200 character" }),
+    name: z.string().trim(),
+    // .min(5, { message: "Product name must be more than 5 character" })
+    // .max(50, { message: "Product name must be less than 50 character" }),
+    description: z.string().trim(),
     image: z.array(z.string()),
     price: z.number().positive().finite(),
-    brand: z
-        .string()
-        .trim()
-        .min(5, { message: "Product name must be more than 5 character" })
-        .max(50, { message: "Product name must be less than 50 character" }),
-    category: z
-        .string()
-        .trim()
-        .min(3, { message: "Category must be more than 3 character" })
-        .max(30, { message: "Category must be less than 30 character" }),
+    brand: z.string().trim(),
+    category: z.string().trim(),
     rating: z.number().max(5),
     tag: z.string().optional(),
     variants: variantValidationSchema.optional(),
@@ -46,32 +28,12 @@ const productValidationSchema = z.object({
 });
 
 export const productUpdateValidationSchema = z.object({
-    name: z
-        .string()
-        .trim()
-        .min(5, { message: "Product name must be more than 5 character" })
-        .max(50, { message: "Product name must be less than 50 character" })
-        .optional(),
-    description: z
-        .string()
-        .trim()
-        .min(5, { message: "Description must be more than 5 character" })
-        .max(200, { message: "Description must be less than 200 character" })
-        .optional(),
+    name: z.string().trim().optional(),
+    description: z.string().trim().optional(),
     image: z.array(z.string()).optional(),
     price: z.number().positive().finite().optional(),
-    brand: z
-        .string()
-        .trim()
-        .min(5, { message: "Product name must be more than 5 character" })
-        .max(50, { message: "Product name must be less than 50 character" })
-        .optional(),
-    category: z
-        .string()
-        .trim()
-        .min(3, { message: "Category must be more than 3 character" })
-        .max(30, { message: "Category must be less than 30 character" })
-        .optional(),
+    brand: z.string().trim().optional(),
+    category: z.string().trim().optional(),
     rating: z.number().max(5).optional(),
     tag: z.string().optional(),
     variants: z
@@ -86,7 +48,7 @@ export const productUpdateValidationSchema = z.object({
         .optional(),
     inventory: z
         .object({
-            quantity: z.number().positive().optional(),
+            quantity: z.number().optional(),
             inStock: z.boolean().optional(),
         })
         .optional(),

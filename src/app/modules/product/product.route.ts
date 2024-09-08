@@ -11,7 +11,11 @@ router.get("/get-products", ProductControllers.getAllProducts);
 
 router.get("/get-categories", ProductControllers.getAllCategories);
 
+router.get("/get-brands", ProductControllers.getAllBrands);
+
 router.get("/getProductsByCategory/:category", ProductControllers.getProductsByCategory);
+
+router.get("/getProductsByTag/:tag", ProductControllers.getProductsByTag);
 
 router.get("/:productId", ProductControllers.getProductById);
 

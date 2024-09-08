@@ -15,9 +15,13 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 const getAllProducts = catchAsync(async (req, res) => {
-    const searchTerm = req?.query?.searchTerm;
-    if (searchTerm) {
-        const result = await ProductServices.getProductsByQueryFromDB(searchTerm as string);
+    const name = req?.query?.name as string;
+    const categories = req?.query?.categories as string;
+    const brands = req?.query?.brands as string;
+    const ratings = req?.query?.ratings as string;
+    const sort = req?.query?.sort as string;
+    if (name || categories || brands || ratings || sort) {
+        const result = await ProductServices.getProductsByQueryFromDB(name, categories, brands, ratings, sort);
         if (result.length === 0) {
             sendResponse(res, {
                 statusCode: httpStatus.NOT_FOUND,
@@ -29,7 +33,7 @@ const getAllProducts = catchAsync(async (req, res) => {
             sendResponse(res, {
                 statusCode: httpStatus.OK,
                 success: true,
-                message: `Products matching search term '${searchTerm}' fetched successfully!`,
+                message: `Products matching filter term fetched successfully!`,
                 data: result,
             });
         }
@@ -89,6 +93,16 @@ const getAllCategories = catchAsync(async (req, res) => {
     });
 });
 
+const getAllBrands = catchAsync(async (req, res) => {
+    const result = await ProductServices.getAllBrandsFromDB();
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Brands fetched successfully!",
+        data: result,
+    });
+});
+
 const getProductsByCategory = catchAsync(async (req, res) => {
     const category = req.params.category;
     const result = await ProductServices.getProductsByCategoryFromDB(category);
@@ -100,6 +114,17 @@ const getProductsByCategory = catchAsync(async (req, res) => {
     });
 });
 
+const getProductsByTag = catchAsync(async (req, res) => {
+    const tag = req.params.tag;
+    const result = await ProductServices.getProductsByTagFromDB(tag);
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Products by tag fetched successfully!",
+        data: result,
+    });
+});
+
 export const ProductControllers = {
     createProduct,
     getAllProducts,
@@ -107,5 +132,7 @@ export const ProductControllers = {
     updateProductById,
     deleteProductById,
     getAllCategories,
+    getAllBrands,
     getProductsByCategory,
+    getProductsByTag,
 };
