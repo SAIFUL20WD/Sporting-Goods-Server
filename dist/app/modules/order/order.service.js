@@ -13,6 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderServices = void 0;
+const product_model_1 = __importDefault(require("../product/product.model"));
+const user_model_1 = __importDefault(require("../user/user.model"));
 const order_model_1 = __importDefault(require("./order.model"));
 const createOrderToDB = (orderData) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield order_model_1.default.create(orderData);
@@ -26,8 +28,26 @@ const getOrderByEmailFromDB = (email) => __awaiter(void 0, void 0, void 0, funct
     const result = yield order_model_1.default.find({ email });
     return result;
 });
+const getStatisticsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const ordersCount = yield order_model_1.default.countDocuments();
+    const usersCount = yield user_model_1.default.countDocuments();
+    const productsCount = yield product_model_1.default.countDocuments();
+    const totalRevenue = yield order_model_1.default.aggregate([
+        {
+            $group: {
+                _id: null,
+                totalRevenue: {
+                    $sum: "$totalPrice",
+                },
+            },
+        },
+    ]);
+    const result = { ordersCount, usersCount, productsCount, totalRevenue };
+    return result;
+});
 exports.OrderServices = {
     createOrderToDB,
     getAllOrdersFromDB,
     getOrderByEmailFromDB,
+    getStatisticsFromDB,
 };

@@ -12,30 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserControllers = void 0;
-const user_service_1 = require("./user.service");
+exports.paymentController = void 0;
+const payment_service_1 = require("./payment.service");
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
-const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
-const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.createUserIntoDB(req.body);
+const confirmationControllerForCreateOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { transactionId, status } = req.query;
+    const result = yield payment_service_1.paymentServices.confirmationServiceForCreateOrder(transactionId, status);
+    res.send(result);
+});
+const getAllPayments = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield payment_service_1.paymentServices.getAllPayments();
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "User created succesfully",
+        message: "All Payment retrived successfully",
         data: result,
     });
 }));
-const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_service_1.UserServices.getAllUsersFromDB();
-    (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
-        success: true,
-        message: "Users retirved succesfully",
-        data: result,
-    });
-}));
-exports.UserControllers = {
-    createUser,
-    getAllUsers,
+exports.paymentController = {
+    confirmationControllerForCreateOrder,
+    getAllPayments,
 };

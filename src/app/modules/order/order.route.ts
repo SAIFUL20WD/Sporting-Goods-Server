@@ -2,8 +2,10 @@ import express from "express";
 import { OrderControllers } from "./order.controller";
 const router = express.Router();
 
-router.post("/orders", OrderControllers.createOrder);
+router.post("/create-order", OrderControllers.createOrder);
 
-router.get("/orders", OrderControllers.getAllOrders);
+router.get("/get-all-orders", OrderControllers.getAllOrders);
 
-export const orderRouter = router;
+router.get("/get-statistics", OrderControllers.getStatistics);
+
+export const orderRoutes = router;
